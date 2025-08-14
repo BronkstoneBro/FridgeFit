@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор питания</title>
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif; margin: 24px; }
+        .container { max-width: 960px; margin: 0 auto; }
+        form { display: grid; gap: 12px; margin-bottom: 24px; }
+        label { font-weight: 600; }
+        input, textarea, button { font-size: 16px; padding: 8px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f7f7f7; }
+        .muted { color: #666; font-size: 14px; }
+        .ok { color: #0a7f2e; }
+        .warn { color: #a61b1b; }
+        .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 0; }
+        .chip { background: #f3f3f3; border: 1px solid #e0e0e0; border-radius: 12px; padding: 4px 8px; font-size: 12px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Калькулятор питания</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="grid">
+            <div>
+                <label for="id_weight">{{ form.weight.label }}</label>
+                {{ form.weight }}
+                {% if form.weight.help_text %}<div class="muted">{{ form.weight.help_text }}</div>{% endif %}
+                {% for err in form.weight.errors %}<div class="warn">{{ err }}</div>{% endfor %}
+            </div>
+            <div>
+                <label for="id_calorie_limit">{{ form.calorie_limit.label }}</label>
+                {{ form.calorie_limit }}
+                {% if form.calorie_limit.help_text %}<div class="muted">{{ form.calorie_limit.help_text }}</div>{% endif %}
+                {% for err in form.calorie_limit.errors %}<div class="warn">{{ err }}</div>{% endfor %}
+            </div>
+        </div>
+
+        <div>
+            <label for="id_items_text">{{ form.items_text.label }}</label>
+            {{ form.items_text }}
+            {% if form.items_text.help_text %}<div class="muted">{{ form.items_text.help_text }}</div>{% endif %}
+            {% for err in form.items_text.errors %}<div class="warn">{{ err }}</div>{% endfor %}
+        </div>
+
+        <button type="submit">Рассчитать</button>
+    </form>
+
+    <div>
+        <details>
+            <summary>Доступные продукты (для справки)</summary>
+            <div class="chips">
+                {% for p in available_products %}
+                    <span class="chip">{{ p.name }}</span>
+                {% empty %}
+                    <span class="muted">Сначала добавьте продукты через админку.</span>
+                {% endfor %}
+            </div>
+        </details>
+    </div>
+
+    {% if not_found and not_found|length %}
+        <p class="warn">Не найдены продукты: {{ not_found|join:", " }}</p>
+    {% endif %}
+
+    {% if portions %}
+        <h2>Результат</h2>
+        <p>
+            Ваша норма: <strong>{{ calorie_limit }} ккал</strong>.
+            Сумма: <strong>{{ totals.calories }} ккал</strong>.
+            Осталось: <strong class="{% if remaining >= 0 %}ok{% else %}warn{% endif %}">{{ remaining }} ккал</strong>.
+        </p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Продукт</th>
+                <th>Граммы</th>
+                <th>Калории</th>
+                <th>Белки</th>
+                <th>Жиры</th>
+                <th>Углеводы</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in portions %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.grams }}</td>
+                    <td>{{ item.calories }}</td>
+                    <td>{{ item.protein }}</td>
+                    <td>{{ item.fat }}</td>
+                    <td>{{ item.carbs }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Итого</th>
+                <th>-</th>
+                <th>{{ totals.calories }}</th>
+                <th>{{ totals.protein }}</th>
+                <th>{{ totals.fat }}</th>
+                <th>{{ totals.carbs }}</th>
+            </tr>
+            </tfoot>
+        </table>
+
+        <h3>Примерное распределение по приёмам пищи</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Приём пищи</th>
+                <th>Калории</th>
+                <th>Белки</th>
+                <th>Жиры</th>
+                <th>Углеводы</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for m in meals %}
+                <tr>
+                    <td>{{ m.name }}</td>
+                    <td>{{ m.calories }}</td>
+                    <td>{{ m.protein }}</td>
+                    <td>{{ m.fat }}</td>
+                    <td>{{ m.carbs }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <p class="muted">Подсказка: формат строки — «Название, граммы», одна запись на строку.</p>
+</div>
+</body>
+</html>
+
