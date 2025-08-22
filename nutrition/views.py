@@ -43,6 +43,26 @@ def _parse_items_text(text: str) -> List[Tuple[str, float]]:
     return parsed
 
 
+def calculate_calories_for_weight_loss(height, weight_kg, weight_grams, age, gender, activity_level):
+    """
+    Расчет калорий для похудения по формуле Миффлина-Сан Жеора
+    с дефицитом калорий 10-20% для безопасного похудения
+    """
+    total_weight = weight_kg + (weight_grams / 1000)
+    
+    if gender == "male":
+        bmr = 10 * total_weight + 6.25 * height - 5 * age + 5
+    else:
+        bmr = 10 * total_weight + 6.25 * height - 5 * age - 161
+    
+    tdee = bmr * float(activity_level)
+    
+    # Дефицит 15% для безопасного похудения
+    calories_for_weight_loss = int(tdee * 0.85)
+    
+    return calories_for_weight_loss, int(tdee)
+
+
 def calculator_view(request):
     products_qs: QuerySet[Product] = Product.objects.all()
     context: dict = {"available_products": products_qs}
@@ -50,9 +70,19 @@ def calculator_view(request):
     if request.method == "POST":
         form = NutritionCalcForm(request.POST)
         if form.is_valid():
-            weight = form.cleaned_data["weight"]
-            calorie_limit = form.cleaned_data["calorie_limit"]
+            height = form.cleaned_data["height"]
+            weight_kg = form.cleaned_data["weight_kg"]
+            weight_grams = form.cleaned_data["weight_grams"]
+            age = form.cleaned_data["age"]
+            gender = form.cleaned_data["gender"]
+            activity_level = form.cleaned_data["activity_level"]
             items_text = form.cleaned_data["items_text"]
+            
+            # Автоматический расчет калорий для похудения
+            calorie_limit, maintenance_calories = calculate_calories_for_weight_loss(
+                height, weight_kg, weight_grams, age, gender, activity_level
+            )
+            total_weight = weight_kg + (weight_grams / 1000)
 
             try:
                 parsed_items = _parse_items_text(items_text)
@@ -112,8 +142,12 @@ def calculator_view(request):
                     "form": form,
                     "portions": portions,
                     "totals": totals,
-                    "weight": weight,
+                    "total_weight": total_weight,
+                    "height": height,
+                    "age": age,
+                    "gender": "Мужчина" if gender == "male" else "Женщина",
                     "calorie_limit": calorie_limit,
+                    "maintenance_calories": maintenance_calories,
                     "remaining": remaining,
                     "meals": meals,
                     "not_found": not_found,
