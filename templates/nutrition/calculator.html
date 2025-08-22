@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FridgeFit - Калькулятор питания для похудения</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #10b981;
+            --primary-green-dark: #059669;
+            --primary-green-light: #d1fae5;
+            --accent-orange: #f59e0b;
+            --accent-orange-light: #fef3c7;
+            --success: #22c55e;
+            --warning: #ef4444;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --surface-alt: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-green-light) 0%, var(--background) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-green-dark);
+            margin: 0 0 10px 0;
+            text-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin: 0;
+            font-weight: 400;
+        }
+        
+        .form-card {
+            background: var(--surface);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 32px;
+            margin-bottom: 32px;
+            border: 1px solid var(--border-light);
+        }
+        
+        .form-section {
+            margin-bottom: 32px;
+        }
+        
+        .form-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-green-dark);
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-section h3::before {
+            content: "👤";
+            font-size: 1.2em;
+        }
+        
+        .form-section:last-of-type h3::before {
+            content: "🥗";
+        }
+        
+        .form-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .weight-group {
+            display: flex;
+            gap: 16px;
+            align-items: end;
+        }
+        
+        .weight-group .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        label { 
+            font-weight: 500;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        
+        input, textarea, select, button { 
+            font-size: 16px; 
+            font-family: inherit;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--border);
+            transition: all 0.2s ease;
+        }
+        
+        input, textarea, select {
+            padding: 12px 16px;
+            width: 100%;
+            background: var(--surface);
+            color: var(--text-primary);
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface);
+        }
+        
+        .radio-option:hover {
+            border-color: var(--primary-green-light);
+            background: var(--primary-green-light);
+        }
+        
+        .radio-option input[type="radio"] {
+            margin: 0;
+            width: auto;
+        }
+        
+        .radio-option input[type="radio"]:checked + span {
+            font-weight: 600;
+            color: var(--primary-green-dark);
+        }
+        
+        .radio-option:has(input[type="radio"]:checked) {
+            border-color: var(--primary-green);
+            background: var(--primary-green-light);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.2s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .muted { 
+            color: var(--text-muted); 
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+        
+        .ok { color: var(--success); font-weight: 500; }
+        .warn { 
+            color: var(--warning); 
+            font-weight: 500;
+            background: #fef2f2;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 6px;
+            border: 1px solid #fecaca;
+        }
+        
+        .available-products {
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .available-products summary {
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        
+        .chips { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 8px; 
+            margin-top: 12px;
+        }
+        
+        .chip { 
+            background: var(--primary-green-light);
+            color: var(--primary-green-dark);
+            border: 1px solid var(--primary-green);
+            border-radius: 20px; 
+            padding: 6px 12px; 
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        /* Results Section Styles */
+        .results-section {
+            margin-top: 32px;
+        }
+        
+        .stats-card {
+            background: var(--surface);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 28px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-light);
+        }
+        
+        .user-profile {
+            background: linear-gradient(135deg, var(--primary-green-light) 0%, rgba(255,255,255,0.8) 100%);
+            border: 2px solid var(--primary-green);
+            border-radius: var(--border-radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .user-profile h4 {
+            color: var(--primary-green-dark);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .user-profile h4::before {
+            content: "📊";
+            font-size: 1.3em;
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .stat-item {
+            background: var(--surface);
+            padding: 16px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--primary-green);
+            box-shadow: var(--shadow);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-green-dark);
+        }
+        
+        .calorie-summary {
+            background: var(--surface);
+            border: 2px solid var(--accent-orange);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .calorie-summary h5 {
+            margin: 0 0 16px 0;
+            color: var(--accent-orange);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .calorie-summary h5::before {
+            content: "🎯";
+        }
+        
+        .calorie-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .calorie-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .calorie-label {
+            color: var(--text-secondary);
+        }
+        
+        .calorie-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .calorie-value.remaining {
+            font-size: 1.2rem;
+        }
+        
+        .progress-container {
+            background: var(--border-light);
+            border-radius: 20px;
+            height: 24px;
+            overflow: hidden;
+            margin: 16px 0;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
+            border-radius: 20px;
+            transition: width 0.8s ease;
+            position: relative;
+        }
+        
+        .progress-bar.over-limit {
+            background: linear-gradient(135deg, var(--warning) 0%, #dc2626 100%);
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 24px 0;
+        }
+        
+        .nutrition-table {
+            background: var(--surface);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+        
+        .nutrition-table h3 {
+            background: var(--primary-green);
+            color: white;
+            margin: 0;
+            padding: 16px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .nutrition-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+        
+        .nutrition-table th,
+        .nutrition-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .nutrition-table th {
+            background: var(--surface-alt);
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        
+        .nutrition-table td {
+            font-size: 0.95rem;
+        }
+        
+        .nutrition-table tbody tr:hover {
+            background: var(--surface-alt);
+        }
+        
+        .nutrition-table tfoot th {
+            background: var(--primary-green-light);
+            color: var(--primary-green-dark);
+            font-weight: 700;
+            border-top: 2px solid var(--primary-green);
+        }
+        
+        .meal-distribution {
+            background: var(--surface);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+        }
+        
+        .meal-distribution h3 {
+            background: var(--accent-orange);
+            color: white;
+            margin: 0;
+            padding: 16px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .meal-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .meal-row:last-child {
+            border-bottom: none;
+        }
+        
+        .meal-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .meal-calories {
+            font-weight: 600;
+            color: var(--accent-orange);
+            font-size: 1.1rem;
+        }
+        
+        .not-found-alert {
+            background: #fef2f2;
+            color: var(--warning);
+            border: 2px solid #fecaca;
+            border-radius: var(--border-radius);
+            padding: 16px 20px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .not-found-alert::before {
+            content: "⚠️";
+            font-size: 1.3em;
+        }
+        
+        @media (max-width: 768px) { 
+            .form-grid { grid-template-columns: 1fr; }
+            .weight-group { flex-direction: column; gap: 12px; }
+            .weight-group .form-group { margin-bottom: 16px; }
+            .radio-group { flex-direction: column; gap: 8px; }
+            .form-card { padding: 24px 20px; }
+            .stats-card { padding: 20px 16px; }
+            .header h1 { font-size: 2rem; }
+            body { padding: 16px; }
+            .nutrition-grid { grid-template-columns: 1fr; }
+            .profile-stats { grid-template-columns: 1fr; }
+            .calorie-row { flex-direction: column; gap: 4px; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🥗 FridgeFit</h1>
+        <p>Умный калькулятор питания для здорового похудения</p>
+    </div>
+
+    <div class="form-card">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-section">
+                <h3>Ваши данные</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="id_height">📏 {{ form.height.label }}</label>
+                        {{ form.height }}
+                        {% if form.height.help_text %}<div class="muted">{{ form.height.help_text }}</div>{% endif %}
+                        {% for err in form.height.errors %}<div class="warn">{{ err }}</div>{% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_age">🎂 {{ form.age.label }}</label>
+                        {{ form.age }}
+                        {% if form.age.help_text %}<div class="muted">{{ form.age.help_text }}</div>{% endif %}
+                        {% for err in form.age.errors %}<div class="warn">{{ err }}</div>{% endfor %}
+                    </div>
+                </div>
+                
+                <div class="weight-group">
+                    <div class="form-group">
+                        <label for="id_weight_kg">⚖️ {{ form.weight_kg.label }}</label>
+                        {{ form.weight_kg }}
+                        {% if form.weight_kg.help_text %}<div class="muted">{{ form.weight_kg.help_text }}</div>{% endif %}
+                        {% for err in form.weight_kg.errors %}<div class="warn">{{ err }}</div>{% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_weight_grams">{{ form.weight_grams.label }}</label>
+                        {{ form.weight_grams }}
+                        {% if form.weight_grams.help_text %}<div class="muted">{{ form.weight_grams.help_text }}</div>{% endif %}
+                        {% for err in form.weight_grams.errors %}<div class="warn">{{ err }}</div>{% endfor %}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>👫 {{ form.gender.label }}</label>
+                    <div class="radio-group">
+                        {% for choice in form.gender %}
+                            <label class="radio-option">
+                                {{ choice.tag }}
+                                <span>{{ choice.choice_label }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                    {% for err in form.gender.errors %}<div class="warn">{{ err }}</div>{% endfor %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_activity_level">🏃‍♂️ {{ form.activity_level.label }}</label>
+                    {{ form.activity_level }}
+                    {% for err in form.activity_level.errors %}<div class="warn">{{ err }}</div>{% endfor %}
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Продукты и порции</h3>
+                <div class="form-group">
+                    <label for="id_items_text">{{ form.items_text.label }}</label>
+                    {{ form.items_text }}
+                    {% if form.items_text.help_text %}<div class="muted">{{ form.items_text.help_text }}</div>{% endif %}
+                    {% for err in form.items_text.errors %}<div class="warn">{{ err }}</div>{% endfor %}
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">🧮 Рассчитать питание</button>
+        </form>
+    </div>
+
+    <div class="available-products">
+        <details>
+            <summary>📋 Доступные продукты (для справки)</summary>
+            <div class="chips">
+                {% for p in available_products %}
+                    <span class="chip">{{ p.name }}</span>
+                {% empty %}
+                    <span class="muted">Сначала добавьте продукты через админку.</span>
+                {% endfor %}
+            </div>
+        </details>
+    </div>
+
+    {% if not_found and not_found|length %}
+        <div class="not-found-alert">
+            <div>
+                <strong>Не найдены продукты:</strong> {{ not_found|join:", " }}
+                <br><small>Пожалуйста, проверьте названия продуктов в списке доступных продуктов ниже.</small>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if portions %}
+        <div class="results-section">
+            <!-- User Profile Card -->
+            <div class="user-profile">
+                <h4>Ваши параметры и цели</h4>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">📏 Рост</div>
+                        <div class="stat-value">{{ height }} см</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">⚖️ Вес</div>
+                        <div class="stat-value">{{ total_weight }} кг</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">🎂 Возраст</div>
+                        <div class="stat-value">{{ age }} лет</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">👤 Пол</div>
+                        <div class="stat-value">{{ gender }}</div>
+                    </div>
+                </div>
+                
+                <div class="calorie-summary">
+                    <h5>Ваши калории</h5>
+                    <div class="calorie-row">
+                        <span class="calorie-label">Калории для поддержания веса:</span>
+                        <span class="calorie-value">{{ maintenance_calories }} ккал/день</span>
+                    </div>
+                    <div class="calorie-row">
+                        <span class="calorie-label">Калории для похудения (дефицит 15%):</span>
+                        <span class="calorie-value">{{ calorie_limit }} ккал/день</span>
+                    </div>
+                    <div class="calorie-row">
+                        <span class="calorie-label {% if remaining >= 0 %}ok{% else %}warn{% endif %}">Осталось до цели:</span>
+                        <span class="calorie-value remaining {% if remaining >= 0 %}ok{% else %}warn{% endif %}">{{ remaining }} ккал</span>
+                    </div>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    {% widthratio totals.calories calorie_limit 100 as progress_percent %}
+                    <div class="progress-bar {% if progress_percent > 100 %}over-limit{% endif %}" 
+                         style="width: {% if progress_percent > 100 %}100{% else %}{{ progress_percent }}{% endif %}%;">
+                        <div class="progress-text">
+                            {{ totals.calories }} / {{ calorie_limit }} ккал ({{ progress_percent }}%)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nutrition Details -->
+            <div class="nutrition-grid">
+                <div class="nutrition-table">
+                    <h3>🍽️ Ваши продукты</h3>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Продукт</th>
+                            <th>Граммы</th>
+                            <th>Калории</th>
+                            <th>Белки</th>
+                            <th>Жиры</th>
+                            <th>Углеводы</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in portions %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.grams }}г</td>
+                                <td>{{ item.calories }}</td>
+                                <td>{{ item.protein }}г</td>
+                                <td>{{ item.fat }}г</td>
+                                <td>{{ item.carbs }}г</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Итого</th>
+                            <th>-</th>
+                            <th>{{ totals.calories }}</th>
+                            <th>{{ totals.protein }}г</th>
+                            <th>{{ totals.fat }}г</th>
+                            <th>{{ totals.carbs }}г</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="meal-distribution">
+                    <h3>🍽️ Распределение по приёмам пищи</h3>
+                    {% for m in meals %}
+                        <div class="meal-row">
+                            <div class="meal-name">
+                                {% if m.name == "Завтрак" %}🌅{% elif m.name == "Обед" %}☀️{% else %}🌙{% endif %}
+                                {{ m.name }}
+                            </div>
+                            <div class="meal-calories">{{ m.calories }} ккал</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <p class="muted">Подсказка: формат строки — «Название, граммы», одна запись на строку.</p>
+</div>
+</body>
+</html>
+
