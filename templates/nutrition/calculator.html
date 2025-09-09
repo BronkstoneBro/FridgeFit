@@ -326,6 +326,278 @@
             color: var(--primary-green-dark);
         }
         
+        .personal-info {
+            background: var(--surface);
+            padding: 16px;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--primary-green);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .personal-info h4 {
+            margin: 0;
+            color: var(--primary-green-dark);
+            font-size: 1.4rem;
+        }
+        
+        .macros-water-summary {
+            background: var(--surface);
+            border: 2px solid var(--primary-green);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .macros-water-summary h5 {
+            margin: 0 0 16px 0;
+            color: var(--primary-green-dark);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .macros-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        
+        .macro-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .macro-item:last-child {
+            border-bottom: none;
+        }
+        
+        .macro-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .macro-value {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        
+        /* Стили для нового интерфейса продуктов */
+        .product-search-section {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            margin-bottom: 24px;
+            align-items: start;
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        #product-search {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+            background: var(--surface);
+        }
+        
+        #product-search:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .search-results.show {
+            display: block;
+        }
+        
+        .search-result-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-light);
+            transition: background-color 0.2s ease;
+        }
+        
+        .search-result-item:hover {
+            background-color: var(--primary-green-light);
+        }
+        
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .search-result-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .search-result-nutrition {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .portion-input {
+            display: flex;
+            gap: 8px;
+        }
+        
+        #portion-weight {
+            width: 120px;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        #portion-weight:focus {
+            outline: none;
+            border-color: var(--primary-green);
+        }
+        
+        #add-product-btn {
+            padding: 12px 20px;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        #add-product-btn:hover:not(:disabled) {
+            background: var(--primary-green-dark);
+            transform: translateY(-1px);
+        }
+        
+        #add-product-btn:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+        }
+        
+        .selected-products h4 {
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+        
+        .products-list {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            min-height: 120px;
+            padding: 16px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+            padding: 32px 16px;
+        }
+        
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .product-item:last-child {
+            border-bottom: none;
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .product-details {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .product-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .portion-edit {
+            width: 80px;
+            padding: 6px 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .remove-product {
+            background: var(--warning);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .remove-product:hover {
+            background: #dc2626;
+        }
+        
+        @media (max-width: 768px) {
+            .product-search-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .portion-input {
+                justify-content: stretch;
+            }
+            
+            #portion-weight {
+                flex: 1;
+            }
+        }
+        
         .calorie-summary {
             background: var(--surface);
             border: 2px solid var(--accent-orange);
@@ -602,15 +874,36 @@
                     {{ form.activity_level }}
                     {% for err in form.activity_level.errors %}<div class="warn">{{ err }}</div>{% endfor %}
                 </div>
+                
+                <div class="form-group">
+                    <label for="id_goal">🎯 {{ form.goal.label }}</label>
+                    {{ form.goal }}
+                    {% for err in form.goal.errors %}<div class="warn">{{ err }}</div>{% endfor %}
+                </div>
             </div>
 
             <div class="form-section">
-                <h3>Продукты и порции</h3>
-                <div class="form-group">
-                    <label for="id_items_text">{{ form.items_text.label }}</label>
-                    {{ form.items_text }}
-                    {% if form.items_text.help_text %}<div class="muted">{{ form.items_text.help_text }}</div>{% endif %}
-                    {% for err in form.items_text.errors %}<div class="warn">{{ err }}</div>{% endfor %}
+                <h3>🍽️ Добавление продуктов</h3>
+                
+                <!-- Поиск и добавление продуктов -->
+                <div class="product-search-section">
+                    <div class="search-container">
+                        <input type="text" id="product-search" placeholder="Начните вводить название продукта..." autocomplete="off">
+                        <div id="search-results" class="search-results"></div>
+                    </div>
+                    
+                    <div class="portion-input">
+                        <input type="number" id="portion-weight" placeholder="Граммы" min="1" step="1">
+                        <button type="button" id="add-product-btn" disabled>+ Добавить</button>
+                    </div>
+                </div>
+                
+                <!-- Список выбранных продуктов -->
+                <div id="selected-products" class="selected-products">
+                    <h4>Выбранные продукты:</h4>
+                    <div id="products-list" class="products-list">
+                        <div class="empty-state">Добавьте продукты для расчёта питания</div>
+                    </div>
                 </div>
             </div>
 
@@ -645,6 +938,13 @@
             <!-- User Profile Card -->
             <div class="user-profile">
                 <h4>Ваши параметры и цели</h4>
+                <!-- Персональная информация -->
+                {% if first_name or last_name %}
+                <div class="personal-info">
+                    <h4>👤 {{ first_name|default:"" }} {{ last_name|default:"" }}</h4>
+                </div>
+                {% endif %}
+                
                 <div class="profile-stats">
                     <div class="stat-item">
                         <div class="stat-label">📏 Рост</div>
@@ -662,17 +962,29 @@
                         <div class="stat-label">👤 Пол</div>
                         <div class="stat-value">{{ gender }}</div>
                     </div>
+                    <div class="stat-item">
+                        <div class="stat-label">🎯 Цель</div>
+                        <div class="stat-value">{{ goal }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">💎 Идеальный вес</div>
+                        <div class="stat-value">{{ ideal_weight }} кг</div>
+                    </div>
                 </div>
                 
                 <div class="calorie-summary">
-                    <h5>Ваши калории</h5>
+                    <h5>🔥 Калории и обмен веществ</h5>
                     <div class="calorie-row">
-                        <span class="calorie-label">Калории для поддержания веса:</span>
-                        <span class="calorie-value">{{ maintenance_calories }} ккал/день</span>
+                        <span class="calorie-label">Базовый метаболизм (BMR):</span>
+                        <span class="calorie-value">{{ bmr }} ккал/день</span>
                     </div>
                     <div class="calorie-row">
-                        <span class="calorie-label">Калории для похудения (дефицит 15%):</span>
-                        <span class="calorie-value">{{ calorie_limit }} ккал/день</span>
+                        <span class="calorie-label">Общий расход энергии (TDEE):</span>
+                        <span class="calorie-value">{{ tdee }} ккал/день</span>
+                    </div>
+                    <div class="calorie-row">
+                        <span class="calorie-label">Целевые калории:</span>
+                        <span class="calorie-value">{{ target_calories }} ккал/день</span>
                     </div>
                     <div class="calorie-row">
                         <span class="calorie-label {% if remaining >= 0 %}ok{% else %}warn{% endif %}">Осталось до цели:</span>
@@ -680,13 +992,36 @@
                     </div>
                 </div>
                 
+                <!-- БЖУ и вода -->
+                <div class="macros-water-summary">
+                    <h5>⚖️ Целевые БЖУ и норма воды</h5>
+                    <div class="macros-grid">
+                        <div class="macro-item">
+                            <span class="macro-label">🥩 Белки:</span>
+                            <span class="macro-value">{{ target_macros.protein.grams }}г ({{ target_macros.protein.calories }} ккал)</span>
+                        </div>
+                        <div class="macro-item">
+                            <span class="macro-label">🧈 Жиры:</span>
+                            <span class="macro-value">{{ target_macros.fat.grams }}г ({{ target_macros.fat.calories }} ккал)</span>
+                        </div>
+                        <div class="macro-item">
+                            <span class="macro-label">🍞 Углеводы:</span>
+                            <span class="macro-value">{{ target_macros.carbs.grams }}г ({{ target_macros.carbs.calories }} ккал)</span>
+                        </div>
+                        <div class="macro-item">
+                            <span class="macro-label">💧 Норма воды:</span>
+                            <span class="macro-value">{{ water_intake }} мл/день</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Progress Bar -->
                 <div class="progress-container">
-                    {% widthratio totals.calories calorie_limit 100 as progress_percent %}
+                    {% widthratio totals.calories target_calories 100 as progress_percent %}
                     <div class="progress-bar {% if progress_percent > 100 %}over-limit{% endif %}" 
                          style="width: {% if progress_percent > 100 %}100{% else %}{{ progress_percent }}{% endif %}%;">
                         <div class="progress-text">
-                            {{ totals.calories }} / {{ calorie_limit }} ккал ({{ progress_percent }}%)
+                            {{ totals.calories }} / {{ target_calories }} ккал ({{ progress_percent }}%)
                         </div>
                     </div>
                 </div>
@@ -748,8 +1083,241 @@
         </div>
     {% endif %}
 
-    <p class="muted">Подсказка: формат строки — «Название, граммы», одна запись на строку.</p>
-</div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Восстанавливаем выбранные продукты, если есть результаты расчёта
+    {% if selected_products_json %}
+    const initialSelectedProducts = JSON.parse('{{ selected_products_json|escapejs }}');
+    {% else %}
+    const initialSelectedProducts = [];
+    {% endif %}
+    const productSearch = document.getElementById('product-search');
+    const searchResults = document.getElementById('search-results');
+    const portionWeight = document.getElementById('portion-weight');
+    const addProductBtn = document.getElementById('add-product-btn');
+    const productsList = document.getElementById('products-list');
+    
+    let selectedProducts = [...initialSelectedProducts]; // Используем восстановленные данные
+    let currentSearchResults = [];
+    let selectedProductData = null;
+    let searchTimeout = null;
+    
+    // Инициализируем интерфейс с восстановленными продуктами
+    if (selectedProducts.length > 0) {
+        updateProductsList();
+        updateFormInputs();
+    }
+    
+    // Поиск продуктов с задержкой
+    productSearch.addEventListener('input', function() {
+        const query = this.value.trim();
+        
+        clearTimeout(searchTimeout);
+        
+        if (query.length >= 2) {
+            searchTimeout = setTimeout(() => {
+                searchProducts(query);
+            }, 300);
+        } else {
+            hideSearchResults();
+            resetAddButton();
+        }
+    });
+    
+    // Скрытие результатов при клике вне
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.search-container')) {
+            hideSearchResults();
+        }
+    });
+    
+    // Обработка ввода веса порции
+    portionWeight.addEventListener('input', function() {
+        updateAddButtonState();
+    });
+    
+    // Добавление продукта
+    addProductBtn.addEventListener('click', function() {
+        if (selectedProductData && portionWeight.value) {
+            addProduct(selectedProductData, parseFloat(portionWeight.value));
+            resetForm();
+        }
+    });
+    
+    // Обработка Enter в полях ввода
+    portionWeight.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !addProductBtn.disabled) {
+            addProductBtn.click();
+        }
+    });
+    
+    function searchProducts(query) {
+        fetch(`/api/search-products/?query=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                currentSearchResults = data.results || [];
+                displaySearchResults(currentSearchResults);
+            })
+            .catch(error => {
+                console.error('Ошибка поиска:', error);
+                hideSearchResults();
+            });
+    }
+    
+    function displaySearchResults(results) {
+        if (results.length === 0) {
+            searchResults.innerHTML = '<div class="search-result-item">Продукты не найдены</div>';
+        } else {
+            searchResults.innerHTML = results.map(product => `
+                <div class="search-result-item" data-product='${JSON.stringify(product)}'>
+                    <div class="search-result-name">${product.name}</div>
+                    <div class="search-result-nutrition">
+                        ${product.calories} ккал, Б: ${product.protein}г, Ж: ${product.fat}г, У: ${product.carbs}г (на 100г)
+                    </div>
+                </div>
+            `).join('');
+            
+            // Добавляем обработчики кликов на результаты
+            searchResults.querySelectorAll('.search-result-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const productData = JSON.parse(this.getAttribute('data-product'));
+                    selectProduct(productData);
+                });
+            });
+        }
+        
+        searchResults.classList.add('show');
+    }
+    
+    function hideSearchResults() {
+        searchResults.classList.remove('show');
+    }
+    
+    function selectProduct(product) {
+        selectedProductData = product;
+        productSearch.value = product.name;
+        hideSearchResults();
+        portionWeight.focus();
+        updateAddButtonState();
+    }
+    
+    function updateAddButtonState() {
+        const hasProduct = selectedProductData !== null;
+        const hasWeight = portionWeight.value && parseFloat(portionWeight.value) > 0;
+        
+        addProductBtn.disabled = !(hasProduct && hasWeight);
+    }
+    
+    function resetAddButton() {
+        selectedProductData = null;
+        addProductBtn.disabled = true;
+    }
+    
+    function addProduct(product, grams) {
+        // Проверяем, не добавлен ли уже этот продукт
+        const existingIndex = selectedProducts.findIndex(p => p.id === product.id);
+        
+        if (existingIndex >= 0) {
+            // Обновляем количество существующего продукта
+            selectedProducts[existingIndex].grams = grams;
+        } else {
+            // Добавляем новый продукт
+            selectedProducts.push({
+                id: product.id,
+                name: product.name,
+                calories: product.calories,
+                protein: product.protein,
+                fat: product.fat,
+                carbs: product.carbs,
+                grams: grams
+            });
+        }
+        
+        updateProductsList();
+        updateFormInputs();
+    }
+    
+    function removeProduct(productId) {
+        selectedProducts = selectedProducts.filter(p => p.id !== productId);
+        updateProductsList();
+        updateFormInputs();
+    }
+    
+    function updateProductGrams(productId, grams) {
+        const product = selectedProducts.find(p => p.id === productId);
+        if (product && grams > 0) {
+            product.grams = grams;
+            updateFormInputs();
+        }
+    }
+    
+    function updateProductsList() {
+        if (selectedProducts.length === 0) {
+            productsList.innerHTML = '<div class="empty-state">Добавьте продукты для расчёта питания</div>';
+        } else {
+            productsList.innerHTML = selectedProducts.map(product => {
+                const factor = product.grams / 100;
+                const calories = Math.round(product.calories * factor);
+                const protein = Math.round(product.protein * factor * 10) / 10;
+                const fat = Math.round(product.fat * factor * 10) / 10;
+                const carbs = Math.round(product.carbs * factor * 10) / 10;
+                
+                return `
+                    <div class="product-item">
+                        <div class="product-info">
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-details">
+                                ${calories} ккал, Б: ${protein}г, Ж: ${fat}г, У: ${carbs}г
+                            </div>
+                        </div>
+                        <div class="product-actions">
+                            <input type="number" class="portion-edit" value="${product.grams}" min="1" step="1" 
+                                   onchange="updateProductGrams(${product.id}, parseFloat(this.value))">
+                            <span style="font-size: 0.9rem; color: var(--text-secondary);">г</span>
+                            <button type="button" class="remove-product" onclick="removeProduct(${product.id})">×</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+    
+    function updateFormInputs() {
+        // Удаляем старые скрытые поля
+        document.querySelectorAll('input[name^="selected_products"], input[name^="selected_portions"]').forEach(el => el.remove());
+        
+        // Добавляем новые скрытые поля
+        const form = document.querySelector('form');
+        selectedProducts.forEach((product, index) => {
+            const productInput = document.createElement('input');
+            productInput.type = 'hidden';
+            productInput.name = 'selected_products[]';
+            productInput.value = product.id;
+            form.appendChild(productInput);
+            
+            const portionInput = document.createElement('input');
+            portionInput.type = 'hidden';
+            portionInput.name = 'selected_portions[]';
+            portionInput.value = product.grams;
+            form.appendChild(portionInput);
+        });
+    }
+    
+    function resetForm() {
+        productSearch.value = '';
+        portionWeight.value = '';
+        selectedProductData = null;
+        addProductBtn.disabled = true;
+        hideSearchResults();
+    }
+    
+    // Делаем функции глобальными для onclick обработчиков
+    window.removeProduct = removeProduct;
+    window.updateProductGrams = updateProductGrams;
+});
+</script>
 </body>
 </html>
 
