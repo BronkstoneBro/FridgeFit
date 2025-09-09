@@ -2,6 +2,18 @@ from django import forms
 
 
 class NutritionCalcForm(forms.Form):
+    first_name = forms.CharField(
+        label="Имя",
+        max_length=100,
+        required=False,
+        help_text="По желанию",
+    )
+    last_name = forms.CharField(
+        label="Фамилия",
+        max_length=100,
+        required=False,
+        help_text="По желанию",
+    )
     height = forms.IntegerField(
         label="Ваш рост (см)",
         min_value=100,
@@ -35,18 +47,19 @@ class NutritionCalcForm(forms.Form):
     activity_level = forms.ChoiceField(
         label="Уровень активности",
         choices=[
-            (1.2, "Малоподвижный образ жизни"),
-            (1.375, "Легкая активность (1-3 раза в неделю)"),
-            (1.55, "Умеренная активность (3-5 раз в неделю)"),
-            (1.725, "Высокая активность (6-7 раз в неделю)"),
-            (1.9, "Очень высокая активность (2 раза в день)")
+            (1.1, "Минимальная активность, сидячий образ жизни"),
+            (1.375, "Легкая активность, спорт 2-3 раза в неделю"),
+            (1.55, "Активный спорт 4-5 раз в неделю"),
+            (1.725, "Высокая активность, спорт каждый день")
         ],
     )
-    items_text = forms.CharField(
-        label="Продукты и граммы",
-        widget=forms.Textarea(attrs={"rows": 6, "placeholder": "Каждая строка: название, граммы (например: Куриная грудка, 200)"}),
-        help_text=(
-            "Укажите по одной записи на строку: 'название, граммы'. Название должно совпадать с продуктом в базе."
-        ),
+    goal = forms.ChoiceField(
+        label="Цель",
+        choices=[
+            ('weight_loss', 'Снижение жира'),
+            ('maintenance', 'Поддержание веса'),
+            ('weight_gain', 'Набор массы')
+        ],
+        widget=forms.RadioSelect,
     )
 
